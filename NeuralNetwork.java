@@ -19,29 +19,25 @@ public class NeuralNetwork {
     }
 
     public void classifyLanguage(Vector toClassify) {
-        //toClassify.normalize();
-        int selector[] = new int[perceptrons.size()];
+        double results[] = new double[perceptrons.size()];
         for (int i = 0; i < perceptrons.size(); ++i) {
-            perceptrons.get(i).checkLanguage(toClassify);
-            selector[i] = toClassify.classifiedValue;
+            results[i] = perceptrons.get(i).classifyTextLanguage(toClassify);
         }
 
-        //SELECTOR
-        int count = 0;
-        for (int select : selector) {
-            count += select;
+        for (int i = 0; i < results.length; ++i) {
+            System.out.println(results[i] + " - " + perceptrons.get(i).language);
         }
-        if (count == 0) System.out.println("Neural network wasn't able to define language:(");
-        else if (count != 1) System.out.println("Neural network has defined more than one language!");
-        else {
-            for (int select = 0; select < selector.length; ++select) {
-                if (selector[select] == 1) {
-                    System.out.println(toClassify.language + " text " +
-                            "was classified as: " + perceptrons.get(select).language);
-                    break;
-                }
+
+        double max = results[0];
+        int maxIndex = 0;
+        for (int i = 1; i < results.length; ++i) {
+            if (results[i] > max) {
+                max = results[i];
+                maxIndex = i;
             }
         }
+        System.out.println("The language of " + toClassify.language + " text was " +
+                "classified as " + perceptrons.get(maxIndex).language + "\n");
     }
 
     public void classifyTextLanguage(String text) {
@@ -58,6 +54,5 @@ public class NeuralNetwork {
         }
         return total;
     }
-
 
 }
