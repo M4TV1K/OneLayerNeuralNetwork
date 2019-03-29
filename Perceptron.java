@@ -27,6 +27,15 @@ public class Perceptron {
         else vector.classifiedValue = 0;
     }
 
+    public double classifyTextLanguage (Vector vector) {
+        double result = 0.0;
+        for (int i = 0; i < vector.points.length; ++i) {
+            result += vector.points[i] * weight.points[i];
+        }
+        result -= threshold;
+        return result;
+    }
+    
     public void trainPerceptron(Vector vector) {
         int difference = vector.trueValue - vector.classifiedValue;
         if (difference == 0) return;
